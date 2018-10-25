@@ -16,13 +16,16 @@ const serverInfo =
   `vue-server-renderer/${require('vue-server-renderer/package.json').version}`
 
 const app = express()
-const {apiRouter} = require('./router');
+const {apiRouter} = require('./router')
+
 
 // 开启接口代理
 const config = require('./config');
 Object.keys(config.proxyTables).forEach(key => {
   app.use(proxy(key, config.proxyTables[key]));
 });
+
+
 
 function createRenderer (bundle, options) {
   // https://github.com/vuejs/vue/blob/dev/packages/vue-server-renderer/README.md#why-use-bundlerenderer
