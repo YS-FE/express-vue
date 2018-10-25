@@ -5,14 +5,10 @@
         <router-link to="/" exact>
           <img class="logo" src="~public/logo-48.png" alt="logo">
         </router-link>
-        <router-link to="/top">Top</router-link>
-        <router-link to="/new">New</router-link>
-        <router-link to="/show">Show</router-link>
-        <router-link to="/ask">Ask</router-link>
-        <router-link to="/job">Jobs</router-link>
-        <a class="github" href="https://github.com/vuejs/vue-hackernews-2.0" target="_blank" rel="noopener">
-          Built with Vue.js
-        </a>
+        <router-link to="/top">不朽经典</router-link>
+        <router-link to="/theater">最新热映</router-link>
+        <router-link to="/search">任性搜索</router-link>
+        <span class="desc">电影排行</span>
       </nav>
     </header>
     <transition name="fade" mode="out-in">
@@ -58,15 +54,15 @@ a
     letter-spacing .075em
     margin-right 1.8em
     &:hover
-      color #fff
+      color #ff
     &.router-link-active
       color #fff
       font-weight 400
     &:nth-child(6)
       margin-right 0
-  .github
+  .desc
     color #fff
-    font-size .9em
+    font-size 1.3em
     margin 0
     float right
 
@@ -77,7 +73,7 @@ a
   vertical-align middle
 
 .view
-  max-width 800px
+  max-width 1000px
   margin 0 auto
   position relative
 

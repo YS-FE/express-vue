@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import 'es6-promise/auto'
 import { createApp } from './app'
-import ProgressBar from './components/ProgressBar.vue'
+import ProgressBar from './client/components/ProgressBar.vue'
+import Config from '../config';
 
 // global progress bar
 const bar = Vue.prototype.$bar = new Vue(ProgressBar).$mount()
@@ -37,25 +38,35 @@ router.onReady(() => {
   // Doing it after initial route is resolved so that we don't double-fetch
   // the data that we already have. Using router.beforeResolve() so that all
   // async components are resolved.
+
   router.beforeResolve((to, from, next) => {
     const matched = router.getMatchedComponents(to)
     const prevMatched = router.getMatchedComponents(from)
-    let diffed = false
-    const activated = matched.filter((c, i) => {
-      return diffed || (diffed = (prevMatched[i] !== c))
-    })
-    const asyncDataHooks = activated.map(c => c.asyncData).filter(_ => _)
-    if (!asyncDataHooks.length) {
-      return next()
-    }
 
-    bar.start()
-    Promise.all(asyncDataHooks.map(hook => hook({ store, route: to })))
-      .then(() => {
-        bar.finish()
-        next()
+    if (to.fullPath === Config.indexPath) {
+      /**
+       * 服务端渲染的首页，经过客户端路由切换时 不再重复获取数据
+       **/
+      return next();
+    } else {
+      let diffed = false
+      const activated = matched.filter((c, i) => {
+        return diffed || (diffed = (prevMatched[i] !== c))
       })
-      .catch(next)
+      const asyncDataHooks = activated.map(c => c.asyncData).filter(_ => _)
+      if (!asyncDataHooks.length) {
+        return next()
+      }
+
+      bar.start()
+      Promise.all(asyncDataHooks.map(hook => hook({ store, route: to })))
+        .then(() => {
+          bar.finish()
+          next()
+        })
+        .catch(next)
+    }
+    
   })
 
   // actually mount to DOM

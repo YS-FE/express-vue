@@ -29,6 +29,8 @@ export default context => {
       if (!matchedComponents.length) {
         return reject({ code: 404 })
       }
+
+
       // Call fetchData hooks on components matched by the route.
       // A preFetch hook dispatches a store action and returns a Promise,
       // which is resolved when the action is complete and store state has been
@@ -37,6 +39,7 @@ export default context => {
         store,
         route: router.currentRoute
       }))).then(() => {
+
         isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
         // After all preFetch hooks are resolved, our store is now
         // filled with the state needed to render the app.
