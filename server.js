@@ -75,6 +75,9 @@ const serve = (path, cache) => express.static(resolve(path), {
   maxAge: cache && isProd ? 1000 * 60 * 60 * 24 * 30 : 0
 })
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.use(compression({ threshold: 0 }))
 app.use(favicon('./public/logo-48.png'))
 app.use('/dist', serve('./dist', true))
